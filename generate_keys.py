@@ -11,7 +11,7 @@ def generate_public_private_keys():
         backend=default_backend()
     )
 
-    password = getpass("RSA Private Key Passphrase(Leave it empty to ignore password): ").encode('utf-8')
+    password = "https://www.shieldstack.tech/".encode('utf-8')
     if password:
         encryption_algorithm = serialization.BestAvailableEncryption(password)
 
