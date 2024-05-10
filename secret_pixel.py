@@ -124,10 +124,12 @@ def hide_file_in_png(image_path, file_to_hide, output_image_path, public_key_pat
             '.bmp': 'BMP',
             '.tif': 'TIFF',
             '.tiff': 'TIFF',
+            '.jpg': 'JPEG',
+            '.jpeg': 'JPEG',
         }
         host_format = extension_to_format.get(file_extension)
 
-    supported_formats = {'TGA', 'TIFF', 'BMP', 'PNG'}
+    supported_formats = {'TGA', 'TIFF', 'BMP', 'PNG', 'JPEG'}
     if host_format not in supported_formats:
         raise ValueError(f"Unsupported image format: {host_format}")
         
@@ -184,11 +186,26 @@ def hide_file_in_png(image_path, file_to_hide, output_image_path, public_key_pat
             print("Extraction cancelled.")
             return
     
-    # Save the new image
-    new_img = Image.fromarray(pixels, 'RGBA')
+    if host_format == 'PNG':
+        new_img = Image.fromarray(pixels, 'RGBA')
+    else:
+        print(
+            f"\n"
+            f"==================== WARNING ====================\n"
+            f"(.{host_format.lower()}) format does not support transparency. "
+            f"That means using the RGBA format will result in a black background."
+            f"Consider using the PNG format for images with transparency."
+            f"If you want to proceed with the current format, the image will be saved with a black background."
+            f"Visit: https://github.com/python-pillow/Pillow/issues/2609#issuecomment-313841918 for more information."
+            f"\n"
+        )
+        
+        new_img = Image.fromarray(pixels, 'RGB')
 
     if host_format == 'PNG':
         new_img.save(output_image_path, format='PNG', optimize=True)
+    elif host_format == 'JPEG':
+        new_img.save(output_image_path, format='JPEG', optimize=True)
     elif host_format == 'BMP':
         new_img.save(output_image_path, format='BMP', optimize=True)
     elif host_format == 'TGA':
