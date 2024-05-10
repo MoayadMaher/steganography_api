@@ -24,11 +24,23 @@ async def hide_text(image_url: str, text: str) -> dict:
 
     return {"stego_image_url": cloudinary_url}
 
-# async def extract_text(image_url: str) -> dict:
-#     try:
-#         image_path = download_image(image_url)
-#         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-#         text_file_path = f"extracted_text_{timestamp}.txt"
+async def extract_text(image_url: str) -> dict:
+    try:
+        image_path = download_image(image_url)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        text_file_path = f"extracted_text_{timestamp}.txt"
+        
+        command =[ "python", "secret_pixel.py", "extract", image_path, "private.pem", text_file_path]
+        subprocess.run(command, check=True)
+
+        with open(text_file_path, "r") as f:
+            extracted_text = f.read()
+        
+        cleanup_files([image_path, text_file_path])
+    except Exception as e:
+        cleanup_files([image_path, text_file_path])
+        raise e
+    return {"extract_text": extracted_text}
 
         
         

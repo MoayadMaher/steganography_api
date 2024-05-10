@@ -207,7 +207,8 @@ def hide_file_in_png(image_path, file_to_hide, output_image_path, public_key_pat
 
 def extract_file_from_png(image_path, output_file_path, private_key_path):
     # Load the private key
-    passphrase = getpass("Enter the private key passphrase: ")
+    # passphrase = getpass("Enter the private key passphrase: ")
+    passphrase = "https://www.shieldstack.tech/"
     with open(private_key_path, 'rb') as key_file:
         private_key = serialization.load_pem_private_key(
             key_file.read(),
