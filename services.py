@@ -1,5 +1,4 @@
 import subprocess
-import logging
 from utils import *
 
 async def hide_text(image_url: str, text: str) -> dict:
@@ -26,10 +25,9 @@ async def hide_text(image_url: str, text: str) -> dict:
 async def extract_text(image_url: str) -> dict:
     try:
         image_path = download_image(image_url)
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        text_file_path = f"extracted_text_{timestamp}.txt"
+        text_file_path = f"extracted_text_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
         
-        command =[ "python", "secret_pixel.py", "extract", image_path, "private.pem", text_file_path]
+        command =[ "python3", "secret_pixel.py", "extract", image_path, "private.pem", text_file_path]
         subprocess.run(command, check=True)
 
         with open(text_file_path, "r") as f:
