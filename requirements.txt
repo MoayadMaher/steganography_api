@@ -7,3 +7,4 @@ uvicorn==0.29.0
 requests==2.31.0
 cloudinary==1.40.0
 python-dotenv==1.0.1
+imageio==2.34.1
